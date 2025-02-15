@@ -1,0 +1,22 @@
+html{
+    background-image: repeating-linear-gradient(to bottom, rgb(201, 201, 113), rgb(144, 227, 255), rgb(0, 243, 243));
+    height: 100%;
+}
+
+div#weather > p{
+    margin-left: 30%;
+    margin-right: 30%;
+    text-align: center;
+}
+
+div#weather > h2{
+    text-align: center;
+}
+
+div#weatherHourly > h2{
+    text-align: center;
+}
+
+div#humidity > h2{
+    text-align: center;
+}

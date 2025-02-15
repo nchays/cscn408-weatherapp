@@ -36,7 +36,7 @@ async function getHourlyWeather() {
             output += `
                 <p>
                     <strong>${new Date(period.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}:</strong> 
-                    ${period.temperature}Â°${period.temperatureUnit}, ${period.shortForecast}
+                    ${period.temperature}°${period.temperatureUnit}, ${period.shortForecast}
                 </p>
             `;
         });
