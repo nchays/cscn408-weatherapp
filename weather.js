@@ -11,25 +11,12 @@ async function getWeather() {
 
         const data = await response.json();
         console.log(data);
-        // const periods = data.properties.periods.slice(0, 12); // Get next 5 hours
-        
-        // let output = "<h2>Hourly Forecast</h2>";
-        // periods.forEach(period => {
-        //     output += `
-        //         <p>
-        //             <strong>${new Date(period.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}:</strong> 
-        //             ${period.temperature}Â°${period.temperatureUnit}, ${period.shortForecast}
-        //         </p>
-        //     `;
-        // });
 
-        
+        const radarHtml = `<iframe src="https://www.rainviewer.com/map.html?loc=${latitude},${longitude},6.0575509300693895&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;" allowfullscreen></iframe>`;
 
-       
-
-        document.getElementById("weatherHourly").innerHTML = output;
+        document.getElementById("weather").innerHTML = radarHtml;
     } catch (error) {
-        document.getElementById("weatherHourly").innerHTML = `<p>Error: ${error.message}</p>`;
+        document.getElementById("weather").innerHTML = `<p>Error: ${error.message}</p>`;
     }
 }
 
