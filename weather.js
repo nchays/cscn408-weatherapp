@@ -6,32 +6,6 @@ var y = 0;
 console.log(x);
 console.log(y);
 
-/*
-function getLocation() {
-    return new Promise(function (resolve, reject) {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    var latitude = position.coords.latitude;
-                    var longitude = position.coords.longitude;
-                    console.log("Latitude:", latitude);
-                    console.log("Longitude:", longitude);
-                    resolve({ latitude: latitude, longitude: longitude });
-                },
-                function (error) {
-                    console.error("Geolocation Error:", error.message);
-                    reject(error);
-                },
-                { enableHighAccuracy: true, maximumAge: 0 }
-            );
-        } else {
-            console.log("Geolocation is not supported by this browser.");
-            reject(new Error("Geolocation not supported"));
-        }
-    });
-}
-    */
-
 async function getWeather() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -77,6 +51,8 @@ async function getWeather() {
                     }
                     
                     document.getElementById("weather").innerHTML = forecastDaily;
+
+                    displayRadar(x, y);
 
                 } catch (error) {
                     document.getElementById("weather").innerHTML = `<p>Error: ${error.message}</p>`;
@@ -242,6 +218,13 @@ async function getAlert() {
 
 
 
+}
+
+function displayRadar(x, y) {
+
+  const radarHtml = `<iframe src="https://www.rainviewer.com/map.html?loc=${x},${y},6.0575509300693895&oCS=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1" width="100%" frameborder="0" style="border:0;height:50vh;" allowfullscreen></iframe>`
+  
+  document.getElementById("radar").innerHTML = radarHtml;
 }
 
 
