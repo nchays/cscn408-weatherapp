@@ -16,7 +16,6 @@ async function getWeather() {
                 console.log("Latitude:", x);
                 console.log("Longitude:", y);
 
-                // Ensure we use correct coordinates (do NOT convert to positive)
                 const url = `https://api.weather.gov/points/${x},${y}`;
                 
                 try {
@@ -37,20 +36,52 @@ async function getWeather() {
                     var forecastDaily = ``;
                     var forecastData = await forecastResponse.json();
                     var forecast;
-                   
-                    for(var i = 0; i < 14; i++){
 
-                        
-                        forecast = forecastData.properties.periods[i];
-                        
-                        forecastDaily += `
-                            <h2>${forecast.name}</h2>
-                            <p>${forecast.detailedForecast}</p>`;
+                    for (var i = 0; i < forecastData.properties.periods.length; i += 2) {
+                        const dayForecast = forecastData.properties.periods[i];
+                        console.log(dayForecast);
+                        const nightForecast = forecastData.properties.periods[i + 1];
+                        console.log(nightForecast);
 
-                        console.log(forecast);
+                        forecastDaily += 
+                            `
+                            <div class="forecast-day-card">
+                                <label class="switch">
+                                    <input type="checkbox" class="toggle-forecast" data-index="${i}">
+                                    <span class="slider round"></span>
+                                </label>
+                                <div class="forecast-text">
+                                    <h2>${dayForecast.name} - ${dayForecast.temperature}°</h2>
+                                    <p>${dayForecast.detailedForecast}</p>
+                                </div>
+                                <div class="forecast-text-night" style="display: none;">
+                                    <h2>${nightForecast.name} - ${nightForecast.temperature}°</h2>
+                                    <p>${nightForecast.detailedForecast}</p>
+                                </div>
+                                
+                            </div>
+                            `;
                     }
                     
                     document.getElementById("weather").innerHTML = forecastDaily;
+
+                    // Add event listeners to toggle switches
+                    document.querySelectorAll('.toggle-forecast').forEach(toggle => {
+                        toggle.addEventListener('change', function() {
+                            const forecastCard = this.closest('.forecast-day-card');
+                            const dayText = forecastCard.querySelector('.forecast-text');
+                            const nightText = forecastCard.querySelector('.forecast-text-night');
+                            if (this.checked) {
+                                dayText.style.display = 'none';
+                                nightText.style.display = 'block';
+                                forecastCard.style.backgroundColor = '#865c83';
+                            } else {
+                                dayText.style.display = 'block';
+                                nightText.style.display = 'none';
+                                forecastCard.style.backgroundColor = '#fffec5';
+                            }
+                        });
+                    });
 
                     displayRadar(x, y);
 
@@ -67,7 +98,6 @@ async function getWeather() {
         console.log("Geolocation is not supported by this browser.");
     }
 }
-
 
 getWeather();
 
@@ -135,7 +165,7 @@ async function getHourlyWeather() {
 getHourlyWeather();
 
 
-async function getHumidity() {
+async function getCurrentConditions() {
     
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -166,32 +196,34 @@ async function getHumidity() {
                     if (!forecastResponse.ok) throw new Error("Humidity data not available");
 
                     const forecastData = await forecastResponse.json();
-                    const periods = forecastData.properties.periods;
-                    const humidity = periods[0].relativeHumidity.value; // Get current hour's humidity
+                    const currentConditons = forecastData.properties.periods[0];
+                    console.log(currentConditons);
+                    const temp = currentConditons.temperature; // Get current hour's temperature
+                    const humidity = currentConditons.relativeHumidity.value; // Get current hour's humidity
 
-                    document.getElementById("humidity").innerHTML = `
-                        <h2>Current Humidity</h2>
+                    document.getElementById("current-conditions").innerHTML = `
+                        <p>${temp}</p>
                         <p>${humidity}%</p>
                     `;
 
                 } catch (error) {
-                    document.getElementById("humidity").innerHTML = `<p>Error: ${error.message}</p>`;
+                    document.getElementById("current-conditions").innerHTML = `<p>Error: ${error.message}</p>`;
                 }
             },
             function (error) {
                 console.error("Error:", error.message);
-                document.getElementById("humidity").innerHTML = `<p>Error: ${error.message}</p>`;
+                document.getElementById("current-conditions").innerHTML = `<p>Error: ${error.message}</p>`;
             },
             { enableHighAccuracy: true, maximumAge: 0 }
         );
     } else {
         console.log("Geolocation is not supported by this browser.");
-        document.getElementById("humidity").innerHTML = `<p>Geolocation is not supported by this browser.</p>`;
+        document.getElementById("current-conditions").innerHTML = `<p>Geolocation is not supported by this browser.</p>`;
     }
 }
 
 
-getHumidity();
+getCurrentConditions();
 
 async function getAlert() {
 
