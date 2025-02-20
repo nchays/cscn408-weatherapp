@@ -35,9 +35,29 @@ async function getWeather() {
                     if (!forecastResponse.ok) throw new Error("Weather forecast not available");
                     var forecastDaily = ``;
                     var forecastData = await forecastResponse.json();
-                    var forecast;
 
-                    for (var i = 0; i < forecastData.properties.periods.length; i += 2) {
+                    // Check if it is currently night, and if so, subtract 1 from the forecast length
+                    var firstPeriod = forecastData.properties.periods[0];
+                    var forecastLength = forecastData.properties.periods.length;
+                    if (!firstPeriod.isDaytime) {
+                        forecastLength -= 1;
+                    }
+
+                    for (var i = 0; i < forecastLength; i += 2) {
+                        // If not daytime
+                        if (!firstPeriod.isDaytime && i == 0) {
+                            forecastDaily += 
+                            `
+                            <div class="forecast-day-card">
+                                <div class="forecast-text">
+                                    <h2>${firstPeriod.name} - ${firstPeriod.temperature}°</h2>
+                                    <p>${firstPeriod.detailedForecast}</p>
+                                </div>
+                            </div>
+                            `;
+                            i-=1;
+                            continue;
+                        }
                         const dayForecast = forecastData.properties.periods[i];
                         console.log(dayForecast);
                         const nightForecast = forecastData.properties.periods[i + 1];
@@ -176,6 +196,8 @@ async function getCurrentConditions() {
                 console.log("Latitude:", x);
                 console.log("Longitude:", y);
 
+                const currentCity = await coordToCity(x, y);
+
                 try {
                     // Step 1: Convert lat/lon to NWS grid coordinates
                     const locationUrl = `https://api.weather.gov/points/${x},${y}`;
@@ -202,8 +224,9 @@ async function getCurrentConditions() {
                     const humidity = currentConditons.relativeHumidity.value; // Get current hour's humidity
 
                     document.getElementById("current-conditions").innerHTML = `
-                        <p>${temp}</p>
-                        <p>${humidity}%</p>
+                        <h1>${currentCity}</h1>
+                        <h2>${temp}°</h2>
+                        <p>Humidity: ${humidity}%</p>
                     `;
 
                 } catch (error) {
@@ -263,6 +286,23 @@ function displayRadar(x, y) {
 getAlert();
 
 
+async function coordToCity(lat, long) {
+    const url = `https://us1.api-bdc.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`;
+                
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error("Location data not available");
 
+                    const data = await response.json();
+                    const city = data.city;
+
+                    console.log(`City: ${city}`);
+
+                    return city;
+                } 
+                catch (error) {
+                    return error.message;
+                }
+}
 
 

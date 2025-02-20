@@ -7,6 +7,23 @@ body {
     margin: 50px 25% 50px 25%;
 }
 
+#current-conditions {
+    text-align: center;
+
+    h1 {
+        font-size: 5em;
+        font-weight: bold;
+        margin: 0;
+    }
+    h2 {
+        font-size: 5em;
+        margin: 0;
+    }
+    p {
+        font-size: 3em;
+    }
+}
+
 #weather {
     display: flex;
     width: 100%;
