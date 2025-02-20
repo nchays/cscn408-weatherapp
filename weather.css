@@ -37,12 +37,12 @@ body {
 }
 
 #weather {
+    overflow-x: scroll;
     display: flex;
     width: 100%;
-    overflow-x: scroll;
     background-color: #f8f8f8;
     border-radius: 10px;
-    scrollbar-width: none;
+    scrollbar-width:auto;
 }
 
 .forecast-day-card {
