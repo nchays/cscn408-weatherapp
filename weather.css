@@ -1,22 +1,117 @@
-html{
-    background-image: repeating-linear-gradient(to bottom, rgb(201, 201, 113), rgb(144, 227, 255), rgb(0, 243, 243));
-    height: 100%;
+body {
+    color: #111111;
+    background-color: #D9AFD9;
+    background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+
+
+    margin: 50px 25% 50px 25%;
 }
 
-div#weather > p{
-    margin-left: 30%;
-    margin-right: 30%;
+#current-conditions {
     text-align: center;
+
+    h1 {
+        font-size: 5em;
+        font-weight: bold;
+        margin: 0;
+    }
+    h2 {
+        font-size: 5em;
+        margin: 0;
+    }
+    h3 {
+        font-size: 3em;
+        margin: 0;
+    }
 }
 
-div#weather > h2{
-    text-align: center;
+.extra-weather-info {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    
+    p {
+        font-size: 2em;
+    }
 }
 
-div#weatherHourly > h2{
-    text-align: center;
+#weather {
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    scrollbar-width: none;
 }
 
-div#humidity > h2{
-    text-align: center;
+.forecast-day-card {
+    flex-shrink: 0;
+    padding: 30px;
+    margin: 20px;
+    height: auto;
+    width: 200px;
+    background-color: #fffec5;
+    border-radius: 5px;
+    position: relative;
 }
+
+.onest-font {
+    font-family: "Onest", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Toggle Switch */
+.switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: inline-block;
+    width: 68px;
+    height: 40px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f8f8f8;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 28px;
+    width: 28px;
+    background-image: url('media/sun.png');
+    background-size: 100%;
+    left: 6px;
+    bottom: 6px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #dbdbdb;
+}
+
+input:checked + .slider:before {
+    transform: translateX(28px);
+    background-color: #865c83;
+    background-image: url('media/moon.png');
+}
+
