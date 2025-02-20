@@ -85,6 +85,11 @@ async function getWeather() {
                     
                     document.getElementById("weather").innerHTML = forecastDaily;
 
+                    // Set the bg color of the first card to night if it is night
+                    if (!firstPeriod.isDaytime) {
+                        document.querySelector('.forecast-day-card').style.backgroundColor = '#865c83';
+                    }
+
                     // Add event listeners to toggle switches
                     document.querySelectorAll('.toggle-forecast').forEach(toggle => {
                         toggle.addEventListener('change', function() {
@@ -221,12 +226,17 @@ async function getCurrentConditions() {
                     const currentConditons = forecastData.properties.periods[0];
                     console.log(currentConditons);
                     const temp = currentConditons.temperature; // Get current hour's temperature
+                    const conditions = currentConditons.shortForecast; // Get current hour's conditions
+                    const windSpeed = currentConditons.windSpeed; // Get current hour's wind speed
+                    const windDirection = currentConditons.windDirection; // Get current hour's wind direction
                     const humidity = currentConditons.relativeHumidity.value; // Get current hour's humidity
 
                     document.getElementById("current-conditions").innerHTML = `
                         <h1>${currentCity}</h1>
                         <h2>${temp}°</h2>
-                        <p>Humidity: ${humidity}%</p>
+                        <h3>${conditions}</h3>
+                        <div class="extra-weather-info">
+                        <p>Wind: ${windSpeed} ${windDirection} | Humidity: ${humidity}%</p>
                     `;
 
                 } catch (error) {

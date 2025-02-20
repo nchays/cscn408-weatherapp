@@ -19,8 +19,20 @@ body {
         font-size: 5em;
         margin: 0;
     }
-    p {
+    h3 {
         font-size: 3em;
+        margin: 0;
+    }
+}
+
+.extra-weather-info {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    
+    p {
+        font-size: 2em;
     }
 }
 
