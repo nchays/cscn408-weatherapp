@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
         <meta charset="utf-8">
@@ -10,32 +6,31 @@
         <title>Weather App </title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="weather.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
     </head>
-    <body>
-        
-            <div id="weather">
-
-
+    <body class="onest-font">
+            <div id="zip-code-input">
+                <input type="text" id="zip-code" placeholder="Enter Zip Code">
+                <button id="submit-zip">Get Weather</button>
+                <button id="use-location"><img src='media/locate.png'></button>
             </div>
 
-            <div id="weatherHourly"></div>
+            <div id="current-conditions">Enter zip code or use current location to see the weather!</div>
 
-            <div id="humidity">
+            <h1>7 Day Forecast</h1>
+            <div id="weather"></div>
 
-            </div>
+            <div id="weatherHourly">...</div>
 
-            <div id="alert">
+            <h1>Active Alerts</h1>
+            <div id="alert">...</div>
+        
+            <h1>Radar</h1>
+            <div id="radar"></div>
 
-            </div>
-        
-            <h2>Radar</h2>
-            <div id="radar">
-            </div>
-        
-        
-        
-        
         <script src="weather.js" async defer></script>
     </body>
 </html>
