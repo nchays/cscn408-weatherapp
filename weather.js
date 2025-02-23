@@ -23,9 +23,13 @@ async function getWeather() {
                     if (!response.ok) throw new Error("Location data not available");
 
                     const data = await response.json();
+                    console.log("Points Data:", data);
                     const gridX = data.properties.gridX;
                     const gridY = data.properties.gridY;
                     const office = data.properties.gridId;
+                    const parts = data.properties.county.split("/");
+                    const zoneId = parts[parts.length - 1];
+                    console.log(`Zone ID: ${zoneId}`);
 
                     console.log(`Grid Location: ${office}/${gridX},${gridY}`);
 
@@ -108,6 +112,7 @@ async function getWeather() {
                         });
                     });
 
+                    getAlert(zoneId);
                     displayRadar(x, y);
 
                 } catch (error) {
@@ -158,7 +163,7 @@ async function getHourlyWeather() {
                     const forecastData = await forecastResponse.json();
                     const periods = forecastData.properties.periods.slice(0, 12); // Get next 12 hours
 
-                    let output = "<h2>Hourly Forecast Today</h2>";
+                    let output = "<h1>12 Hour Forecast</h1>";
                     periods.forEach(period => {
                         output += `
                             <p>
@@ -258,23 +263,30 @@ async function getCurrentConditions() {
 
 getCurrentConditions();
 
-async function getAlert() {
+async function getAlert(zoneId) {
 
     //url that gets the alerts currently for a state
-    const url = "https://api.weather.gov/alerts/active?area=VA"
+    const url = `https://api.weather.gov/alerts/active/zone/${zoneId}`
 
     try {
         const response = await fetch(url, { headers: { "User-Agent": "MyWeatherApp/1.0 (myemail@example.com)" }});
         if (!response.ok) throw new Error("Weather data not available");
 
         const data = await response.json();
+        console.log("Alert Data:", data);
         const alert = data.features[0];//stores the data of the alert into alert variable
 
-        //printing of the alert to the webpage
-        document.getElementById("alert").innerHTML = `
-            <h2>${alert.properties.event}</h2>
-            <p>${alert.properties.description}</p>
-        `;
+        if (alert) {
+
+            //printing of the alert to the webpage
+            document.getElementById("alert").innerHTML = `
+                <h2>${alert.properties.event}</h2>
+                <p>${alert.properties.description}</p>
+            `;
+        }
+        else {
+            document.getElementById("alert").innerHTML = `<p>No alerts at this time.</p>`;//if there are no alerts, it will print no alerts
+        }
 
     } catch (error) {
         document.getElementById("alert").innerHTML = `<p>Error: ${error.message}</p>`;//error if the API was not successful in grabbing the info
@@ -291,9 +303,6 @@ function displayRadar(x, y) {
   
   document.getElementById("radar").innerHTML = radarHtml;
 }
-
-
-getAlert();
 
 
 async function coordToCity(lat, long) {
