@@ -44,7 +44,7 @@ body {
 #weather {
     display: flex;
     width: 100%;
-    overflow-x: scroll;
+    overflow-x: auto;
     border-radius: 10px;
 }
 
